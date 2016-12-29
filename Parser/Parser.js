@@ -6,13 +6,25 @@ var function_string;
 
 function parser_increment_cursor(){
 
+
+    if(is_num){
+	while(!isNaN(function_string[cursor]))
+	    cursor++;
+    }
+    else
+	cursor++;
+
+    while(function_string[cursor] == ' ')
+	cursor++;
+    
+    
 }
 
 /*returns array of len plot coordinates.length() containing identical
   values as whatever number cursor is pointing to.*/
 function get_num(){
 
-    var int_string = ""
+    var int_string = "";
     var i = cursor;
 
     while(!isNaN(function_string[i])){
