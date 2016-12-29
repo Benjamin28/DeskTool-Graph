@@ -3,6 +3,43 @@ var cursor = 0;
 var plot_coordinates = [];
 var function_string;
 
+
+function parser_increment_cursor(){
+
+}
+
+/*returns array of len plot coordinates.length() containing identical
+  values as whatever number cursor is pointing to.*/
+function get_num(){
+
+    var int_string = ""
+    var i = cursor;
+
+    while(!isNaN(function_string[i])){
+	int_string += function_string[i];
+    }
+
+    var num_value = parseInt(int_string);
+    
+    var return_list = new Array(plot_coordinates.length());
+
+    for(i = 0; i < return_list.length(); i++){
+	return_list[i] = num_value;
+    }
+    return return_list;
+}
+
+/*true if cursor is pointing to num*/
+function is_num(){
+
+    if(isNaN(function_string[cursor])){
+	return false;
+    }
+    return true;
+
+}
+
+
 function parser_high_priority(){
 
 
