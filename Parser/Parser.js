@@ -6,6 +6,7 @@ var function_string;
 
 function parser_increment_cursor(){
 
+    console.log("incrementing cursor");
 
     if(is_num){
 	while(!isNaN(function_string[cursor]))
@@ -60,13 +61,13 @@ function parser_high_priority(){
 
     //init list to catch output
     if(indicator == '(' || indicator == 'x' || is_int()){
-	result_list = new Array(plot_coordinates.length());
+	result_list = new Array(plot_coordinates.length);
     }else
 	print("ERROR, invalid function");
 
     if(indicator == 'x'){
 
-	return_list = [for (x of plot_coordinates) x];
+	return_list = plot_coordinates.slice();
 	parser_increment_cursor();
 	return return_list;
 
@@ -89,7 +90,7 @@ function parser_med_priority(){
 
     //array
     var hi_prio_left = parser_high_priority();
-    while(func_string[cursor] == '*'){
+    while(function_string[cursor] == '*'){
 
 	parser_increment_cursor();
 
@@ -109,13 +110,15 @@ function parser_low_priority(values){
 
     //array
     var med_prio_left = parser_med_priority();
+    console.log("med prio left "+med_prio_left);
 
-    while(func_string[cursor] == '+'){
+    while(function_string[cursor] == '+'){
 	
 	parser_increment_cursor();
 
 	//array
 	var med_prio_right = parser_med_priority();
+	parser.log("med prio right " + med_prio_right);
 	var i = 0;
 	for(i; i < values.length(); i++){
 
@@ -123,6 +126,7 @@ function parser_low_priority(values){
 	    
 	}
     }
+    console.log(values);
     return values;
 }
 
@@ -146,13 +150,15 @@ function parser_plot(plot_coords, func_string){
     plot_coordinates = plot_coords;
     
     //init values array
-    var values = new Array(plot_coords.length());
+    var values = new Array(plot_coords.length);
 
     
-    parser_expression();
+    var plot_vars = parser_expression();
 
-    print("done parsing");
-    print(plot_coords, plot_vars);
-    
+    console.log("done parsing");
+    console.log(plot_coords);
+    console.log(plot_vars);
     
 }
+
+parser_plot([0, 1, 2], "x+5");
