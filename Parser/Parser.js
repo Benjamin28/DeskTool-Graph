@@ -6,9 +6,9 @@ var function_string;
 
 function parser_increment_cursor(){
 
-    console.log("incrementing cursor");
+    console.log("incrementing cursor: cur is "+function_string[cursor]);
 
-    if(is_num){
+    if(is_num()){
 	while(!isNaN(function_string[cursor]))
 	    cursor++;
     }
@@ -60,7 +60,7 @@ function parser_high_priority(){
     var result_list;
 
     //init list to catch output
-    if(indicator == '(' || indicator == 'x' || is_int()){
+    if(indicator == '(' || indicator == 'x' || is_num()){
 	result_list = new Array(plot_coordinates.length);
     }else
 	print("ERROR, invalid function");
@@ -74,7 +74,7 @@ function parser_high_priority(){
     }
     if(is_num()){
 
-	return_list = parser_get_num();
+	return_list = get_num();
 	//possible optimization, is_num_increment
 	parser_increment_cursor();
 	return return_list;
@@ -90,6 +90,7 @@ function parser_med_priority(){
 
     //array
     var hi_prio_left = parser_high_priority();
+    console.log(hi_prop_left);
     while(function_string[cursor] == '*'){
 
 	parser_increment_cursor();
@@ -112,19 +113,26 @@ function parser_low_priority(values){
     var med_prio_left = parser_med_priority();
     console.log("med prio left "+med_prio_left);
 
-    while(function_string[cursor] == '+'){
+    console.log("current token is " + function_string[cursor]);
+
+    while(function_string[cursor] == "+"){
+	console.log("in addition loop");
 	
 	parser_increment_cursor();
-
+	
+	
 	//array
 	var med_prio_right = parser_med_priority();
-	parser.log("med prio right " + med_prio_right);
+	console.log("med prio right " + med_prio_right);
 	var i = 0;
 	for(i; i < values.length(); i++){
 
 	    values[i] = med_prio_left[i] + med_prio_right[i];
+	    console.log(i);
 	    
 	}
+	console.log("just added curtok is " + function_string[cursor]);
+
     }
     console.log(values);
     return values;
