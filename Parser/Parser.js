@@ -30,13 +30,14 @@ function get_num(){
 
     while(!isNaN(function_string[i])){
 	int_string += function_string[i];
+	i++;
     }
 
     var num_value = parseInt(int_string);
     
-    var return_list = new Array(plot_coordinates.length());
+    var return_list = new Array(plot_coordinates.length);
 
-    for(i = 0; i < return_list.length(); i++){
+    for(i = 0; i < return_list.length; i++){
 	return_list[i] = num_value;
     }
     return return_list;
@@ -55,6 +56,8 @@ function is_num(){
 
 function parser_high_priority(){
 
+    console.log("entering high prio");
+    console.log("current curtok is " + function_string[cursor]);
 
     var indicator = function_string[cursor];
     var result_list;
@@ -73,10 +76,12 @@ function parser_high_priority(){
 
     }
     if(is_num()){
+	console.log("discovered number");
 
 	return_list = get_num();
 	//possible optimization, is_num_increment
 	parser_increment_cursor();
+	console.log("returning number");
 	return return_list;
 	
     }
@@ -89,8 +94,9 @@ function parser_high_priority(){
 function parser_med_priority(){
 
     //array
+    console.log("entering med prio");
     var hi_prio_left = parser_high_priority();
-    console.log(hi_prop_left);
+    console.log(hi_prio_left);
     while(function_string[cursor] == '*'){
 
 	parser_increment_cursor();
@@ -125,9 +131,9 @@ function parser_low_priority(values){
 	var med_prio_right = parser_med_priority();
 	console.log("med prio right " + med_prio_right);
 	var i = 0;
-	for(i; i < values.length(); i++){
+	for(i; i < plot_coordinates.length; i++){
 
-	    values[i] = med_prio_left[i] + med_prio_right[i];
+	    med_prio_left[i] = med_prio_left[i] + med_prio_right[i];
 	    console.log(i);
 	    
 	}
@@ -135,7 +141,7 @@ function parser_low_priority(values){
 
     }
     console.log(values);
-    return values;
+    return med_prio_left;
 }
 
 
