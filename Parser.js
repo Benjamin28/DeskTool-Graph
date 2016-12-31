@@ -3,6 +3,18 @@ var cursor;
 var plot_coordinates = [];
 var function_string;
 
+function parser_get_domain(min, max){
+
+    var return_array=[];
+
+    var step_size = (max-min)/100;
+
+    for(var i = 0; i < 100; i++){
+	return_array.push(min+i*step_size);
+    }
+    
+    return return_array;
+}
 
 function parser_increment_cursor(){
 
