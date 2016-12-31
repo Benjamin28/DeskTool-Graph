@@ -1,5 +1,5 @@
 // cursor advances from 0 to func_string.length()
-var cursor = 0;
+var cursor;
 var plot_coordinates = [];
 var function_string;
 
@@ -89,7 +89,6 @@ function parser_med_priority(){
 
     //array
     var hi_prio_left = parser_high_priority();
-    console.log(hi_prio_left);
     while(function_string[cursor] == '*'){
 
 	parser_increment_cursor();
@@ -112,7 +111,6 @@ function parser_low_priority(values){
     var med_prio_left = parser_med_priority();
 
     while(function_string[cursor] == "+"){
-	console.log("in addition loop");
 	
 	parser_increment_cursor();
 	
@@ -127,7 +125,6 @@ function parser_low_priority(values){
 	}
 
     }
-    console.log(values);
     return med_prio_left;
 }
 
@@ -147,6 +144,9 @@ function parser_expression(values){
 
 function parser_plot(plot_coords, func_string){
 
+
+    cursor = 0;
+    
     function_string = func_string;
     plot_coordinates = plot_coords;
     
@@ -156,8 +156,7 @@ function parser_plot(plot_coords, func_string){
     
     var plot_vars = parser_expression();
 
-    console.log("done parsing");
-    console.log(plot_coords);
     console.log(plot_vars);
+    return plot_vars;
     
 }

@@ -1,28 +1,37 @@
 <html>
   <head>
+
+    <canvas width = "300" height = "300" id = "my_Canvas"></canvas>
+    
     <script src="Parser.js"></script>
 
     <script>
 
-      function plot(){
+      //init webgl canvas
+      function init_gl(){
       
-      parser_plot([0, 1, 2, 3], document.getElementById('lolz').value);
+      var canvas = document.getElementById('my_Canvas');
+      var gl = canvas.getContext('experimental-webgl');
+      }
+
+
+      function plot(){
+
+      var domain = [0, 1, 2, 3];
+      
+      var points = parser_plot(domain, document.getElementById('function').value);
       
       }
-      </script>
+    </script>
 
   </head>
-
-
-  
-
-
   
   <body>
 
 
     
-    <input type="text" name="enter" class="enter" value="" id="lolz"/>
+    <input type="text" placeholder = "function" name="enter" class="enter" value="" id="function"/>
+    <input type="text" placeholder = "bounds" name="enter" class="enter" value="" id="bounds"/>
     <input type="button" onclick="plot();" value="Plot!"/>
 
     
