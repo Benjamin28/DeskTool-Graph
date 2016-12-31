@@ -1,16 +1,31 @@
 <html>
   <head>
     <script src="Parser.js"></script>
+
+    <script>
+
+      function plot(){
+      
+      parser_plot([0, 1, 2, 3], document.getElementById('lolz').value);
+      
+      }
+      </script>
+
   </head>
 
+
+  
+
+
+  
   <body>
 
-    <form action="demo_form.asp">
-      Formula: <input type="text" name="fname"><br>
-    </form>
+
     
+    <input type="text" name="enter" class="enter" value="" id="lolz"/>
+    <input type="button" onclick="plot();" value="Plot!"/>
+
     
-    <input type="button" onclick="parser_plot([0,1,2,3,4],&quot;x+3&quot;)" value="Plot!"/>
   </body>
 
   
