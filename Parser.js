@@ -6,11 +6,13 @@ var function_string;
 function parser_get_domain(min, max){
 
     var return_array=[];
+    
+    var num_points = 100;
+    
+    var step_size = (max-min)/num_points;
 
-    var step_size = (max-min)/100;
-
-    for(var i = 0; i < 100; i++){
-	return_array.push(min+i*step_size);
+    for(var i = 0; i < num_points; i++){
+    return_array.push(min+i*step_size);
     }
     
     return return_array;
@@ -20,14 +22,14 @@ function parser_increment_cursor(){
 
 
     if(is_num()){
-	while(!isNaN(function_string[cursor]))
-	    cursor++;
+    while(!isNaN(function_string[cursor]) || function_string[cursor] == ".")
+        cursor++;
     }
     else
-	cursor++;
+    cursor++;
 
     while(function_string[cursor] == ' ')
-	cursor++;
+    cursor++;
     
     
 }
@@ -38,18 +40,22 @@ function get_num(){
 
     var int_string = "";
     var i = cursor;
+    var dec = 0;
 
-    while(!isNaN(function_string[i])){
-	int_string += function_string[i];
-	i++;
+    while(!isNaN(function_string[i]) || (function_string[i] == "." && dec < 1)){
+        if(function_string[i] == "."){
+            dec++;
+        }
+        int_string += function_string[i];
+        i++;
     }
 
-    var num_value = parseInt(int_string);
-    
+    var num_value = parseFloat(int_string);
+    console.log(num_value);
     var return_list = new Array(plot_coordinates.length);
 
     for(i = 0; i < return_list.length; i++){
-	return_list[i] = num_value;
+    return_list[i] = num_value;
     }
     return return_list;
 }
@@ -57,11 +63,7 @@ function get_num(){
 /*true if cursor is pointing to num*/
 function is_num(){
 
-    if(isNaN(function_string[cursor])){
-	return false;
-    }
-    return true;
-
+    return(!isNaN(function_string[cursor]));
 }
 
 
@@ -72,27 +74,27 @@ function parser_high_priority(){
 
     //init list to catch output
     if(indicator == '(' || indicator == 'x' || is_num()){
-	result_list = new Array(plot_coordinates.length);
+    result_list = new Array(plot_coordinates.length);
     }else
-	console.log("ERROR, invalid function");
+    console.log("ERROR, invalid function");
 
     if(indicator == 'x'){
 
-	return_list = plot_coordinates.slice();
-	parser_increment_cursor();
-	return return_list;
+    return_list = plot_coordinates.slice();
+    parser_increment_cursor();
+    return return_list;
 
     }
     if(is_num()){
 
-	return_list = get_num();
-	//possible optimization, is_num_increment
-	parser_increment_cursor();
-	return return_list;
-	
+    return_list = get_num();
+    //possible optimization, is_num_increment
+    parser_increment_cursor();
+    return return_list;
+    
     }
     if(indicator == '('){
-	console.log("ERROR: parenthesis not yet implemented");
+    console.log("ERROR: parenthesis not yet implemented");
     }
     
 }
@@ -103,15 +105,15 @@ function parser_med_priority(){
     var hi_prio_left = parser_high_priority();
     while(function_string[cursor] == '*'){
 
-	parser_increment_cursor();
+    parser_increment_cursor();
 
-	//array	
-	var hi_prio_right = parser_high_priority();
-	var i = 0;
-	for (i; i < plot_coordinates.length; i ++){
-	    hi_prio_left[i] = hi_prio_left[i] * hi_prio_right[i];
-	}
-	
+    //array    
+    var hi_prio_right = parser_high_priority();
+    var i = 0;
+    for (i; i < plot_coordinates.length; i ++){
+        hi_prio_left[i] = hi_prio_left[i] * hi_prio_right[i];
+    }
+    
     }
     return hi_prio_left;
 }
@@ -123,18 +125,18 @@ function parser_low_priority(values){
     var med_prio_left = parser_med_priority();
 
     while(function_string[cursor] == "+"){
-	
-	parser_increment_cursor();
-	
-	
-	//array
-	var med_prio_right = parser_med_priority();
-	var i = 0;
-	for(i; i < plot_coordinates.length; i++){
+    
+    parser_increment_cursor();
+    
+    
+    //array
+    var med_prio_right = parser_med_priority();
+    var i = 0;
+    for(i; i < plot_coordinates.length; i++){
 
-	    med_prio_left[i] = med_prio_left[i] + med_prio_right[i];
-	    
-	}
+        med_prio_left[i] = med_prio_left[i] + med_prio_right[i];
+        
+    }
 
     }
     return med_prio_left;
@@ -147,9 +149,9 @@ function parser_low_priority(values){
   RETURNS: array of values that correspond to each value in plot_coords
 */
 
-function parser_expression(values){
+function parser_expression(){
 
-    return parser_low_priority(values);
+    return parser_low_priority();
 
 }
 
@@ -163,7 +165,7 @@ function parser_plot(plot_coords, func_string){
     plot_coordinates = plot_coords;
     
     //init values array
-    var values = new Array(plot_coords.length);
+    //var values = new Array(plot_coords.length);
 
     
     var plot_vars = parser_expression();
