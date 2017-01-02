@@ -6,10 +6,12 @@ var function_string;
 function parser_get_domain(min, max){
 
     var return_array=[];
+	
+	var num_points = 100;
+	
+    var step_size = (max-min)/num_points;
 
-    var step_size = (max-min)/100;
-
-    for(var i = 0; i < 100; i++){
+    for(var i = 0; i < num_points; i++){
 	return_array.push(min+i*step_size);
     }
     
@@ -20,7 +22,7 @@ function parser_increment_cursor(){
 
 
     if(is_num()){
-	while(!isNaN(function_string[cursor]))
+	while(!isNaN(function_string[cursor]) || function_string[cursor] == ".")
 	    cursor++;
     }
     else
@@ -38,14 +40,18 @@ function get_num(){
 
     var int_string = "";
     var i = cursor;
+	var dec = 0;
 
-    while(!isNaN(function_string[i])){
-	int_string += function_string[i];
-	i++;
+    while(!isNaN(function_string[i]) || (function_string[i] == "." && dec < 1)){
+		if(function_string[i] == "."){
+			dec++;
+		}
+		int_string += function_string[i];
+		i++;
     }
 
-    var num_value = parseInt(int_string);
-    
+    var num_value = parseFloat(int_string);
+    console.log(num_value);
     var return_list = new Array(plot_coordinates.length);
 
     for(i = 0; i < return_list.length; i++){
@@ -57,11 +63,7 @@ function get_num(){
 /*true if cursor is pointing to num*/
 function is_num(){
 
-    if(isNaN(function_string[cursor])){
-	return false;
-    }
-    return true;
-
+	return(!isNaN(function_string[cursor]));
 }
 
 
@@ -147,9 +149,9 @@ function parser_low_priority(values){
   RETURNS: array of values that correspond to each value in plot_coords
 */
 
-function parser_expression(values){
+function parser_expression(){
 
-    return parser_low_priority(values);
+    return parser_low_priority();
 
 }
 
@@ -163,7 +165,7 @@ function parser_plot(plot_coords, func_string){
     plot_coordinates = plot_coords;
     
     //init values array
-    var values = new Array(plot_coords.length);
+    //var values = new Array(plot_coords.length);
 
     
     var plot_vars = parser_expression();
