@@ -39,44 +39,10 @@ function graph_draw(gl, canvas, domain, range){
     gl.clearColor(0.0, 0.0, 0.0, 0.1);
     gl.enable(gl.DEPTH_TEST); 
     gl.clear(gl.COLOR_BUFFER_BIT);
-    /*
-    gl.viewport(0,0,canvas.width,canvas.height);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
-
-
-    vertices = [-0.1, 0.1, 0.1, 0.1, 0.1, -0.1,];
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-    gl.bindBuffer(gl.ARRAY_BUFFER, null)
-    gl.viewport(0,0,canvas.width,canvas.height);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
-
-
-    vertices = [-0.1, 0.1, 0.8, 0.1, 0.1, -0.1,];
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-    gl.bindBuffer(gl.ARRAY_BUFFER, null)
-
-    gl.viewport(0,0,canvas.width,canvas.height);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);*/
-
-
-//    graph_triangle(vertex_buffer, gl, canvas);
     graph_plot_points(vertex_buffer, gl, canvas, domain, range);
     
 }
 
-function graph_triangle(vertex_buffer, gl, canvas){
-
-    vertices = [-0.5, 0.5, 0.5, 0.5, 0.5, -0.5,];
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-    gl.bindBuffer(gl.ARRAY_BUFFER, null)
-    gl.viewport(0,0,canvas.width,canvas.height);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
-
-
-}
 
 function graph_plot_points(vertex_buffer, gl, canvas, domain, range){
 
@@ -85,7 +51,7 @@ function graph_plot_points(vertex_buffer, gl, canvas, domain, range){
 
     console.log(x_max);
 
-    var y_max = Math.max.apply(null, range);
+    var y_max = Math.max(Math.max.apply(null, range), 5);
 
     if(y_max == 0)
 	y_max = 1;
