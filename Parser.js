@@ -3,15 +3,14 @@ var cursor;
 var plot_coordinates = [];
 var function_string;
 
-function parser_get_domain(min, max){
+function parser_get_domain(min, max, frequency){
 
     var return_array=[];
     
-    var num_points = 100;
     
-    var step_size = (max-min)/num_points;
+    var step_size = (max-min)/frequency;
 
-    for(var i = 0; i < num_points; i++){
+    for(var i = 0; i < frequency; i++){
 	return_array.push(min+i*step_size);
     }
     
@@ -107,13 +106,25 @@ function parser_high_priority(){
     var t = function_string.slice(cursor, cursor+3)
 
     
-    if(t == "sin"){
+    if(t == "sin" || t == "tan" || t == "cos"){
 
 	parser_increment_cursor();
 	result_list = parser_expression();
 
-	for(var i = 0; i < result_list.length; i++){
-	    result_list[i] = Math.sin(result_list[i]);
+	if(t == "sin"){
+	    for(var i = 0; i < result_list.length; i++){
+		result_list[i] = Math.sin(result_list[i]);
+	    }
+	}
+	else if(t == "tan"){
+	    for(var i = 0; i < result_list.length; i++){
+		result_list[i] = Math.tan(result_list[i]);
+	    }
+	}	
+	else if(t == "cos"){
+	    for(var i = 0; i < result_list.length; i++){
+		result_list[i] = Math.cos(result_list[i]);
+	    }
 	}
 	parser_increment_cursor();
 	return result_list;
@@ -125,17 +136,25 @@ function parser_med_priority(){
 
     //array
     var hi_prio_left = parser_high_priority();
-    while(function_string[cursor] == '*'){
+    while(function_string[cursor] == '*' || function_string[cursor] == "/"){
 
+	var t = function_string[cursor];
 	parser_increment_cursor();
 
 	//array    
 	var hi_prio_right = parser_high_priority();
 	var i = 0;
-	for (i; i < plot_coordinates.length; i ++){
-            hi_prio_left[i] = hi_prio_left[i] * hi_prio_right[i];
+	if(t == "*"){
+	    for (i; i < plot_coordinates.length; i ++){
+		hi_prio_left[i] = hi_prio_left[i] * hi_prio_right[i];
+	    }
 	}
-	
+	else if(t == "/"){
+	    for (i; i < plot_coordinates.length; i ++){
+		hi_prio_left[i] = hi_prio_left[i] / hi_prio_right[i];
+	    }
+	}
+	    
     }
     return hi_prio_left;
 }
