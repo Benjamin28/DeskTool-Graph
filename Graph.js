@@ -2,7 +2,6 @@
 
 function graph_draw(gl, canvas, domain, range){
 
-    console.log("in graph_draw");
     
     var vertex_buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
@@ -49,21 +48,18 @@ function graph_plot_points(vertex_buffer, gl, canvas, domain, range){
     var x_max = domain[domain.length-1];
     var x_min = domain[0];
 
-    console.log(x_max);
+
 
     var y_max = Math.max(Math.max.apply(null, range), 5);
 
     if(y_max == 0)
 	y_max = 1;
 
-    console.log(domain.length);
     
     for(var i = 0; i < domain.length; i++){
 
 	var x = domain[i] / x_max;
 	var y = range[i] / y_max;
-
-	console.log(x, y);
 
 	var vertices = [x-0.01, y+0.01, x+0.01, y+0.01, x+0.01, y-0.01,]
 	gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);

@@ -6,7 +6,6 @@
     <script src="Parser.js"></script>
     <script src="Graph.js"></script>
     <script src="Num_Al.js"></script>
-
     <script>
 
       function plot(){
@@ -27,19 +26,23 @@
       
       }
 
-      
       function rhieman_sum(){
 
-      var lower = document.getElementById('bound_min').value;
-      var upper = document.getElementById('bound_max').value;
+      var lower = parseFloat(document.getElementById('bound_min').value);
+      var upper = parseFloat(document.getElementById('bound_max').value);
+      var subintervals = parseFloat(document.getElementById('subintervals').value);
 
-      domain = parser_get_domain(lower, upper, 1000);
+      var domain = parser_get_domain(lower, upper, subintervals);
+
+      var step_size = (upper-lower)/subintervals;
+      console.log(step_size, lower, upper, subintervals);
       
       plot();
-      numal_rsum(domain, document.getElementById('function').value);
+      numal_rsum(domain, document.getElementById('function').value, subintervals, step_size);
 
       }
     </script>
+
 
   </head>
   
@@ -51,6 +54,7 @@
     <input type="text" placeholder = "bound min" name="enter" class="enter" value="" id="bound_min"/>
     <input type="text" placeholder = "bound max" name="enter" class="enter" value="" id="bound_max"/>
     <input type="button" onclick="plot();" value="Plot!"/>
+    <input type="text" placeholder = "total subintervals" name="enter" class="enter" value="" id="subintervals"/>
     <input type="button" onclick="rhieman_sum();" value="r-sum!"/>
 
     
