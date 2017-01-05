@@ -5,15 +5,18 @@
     
     <script src="Parser.js"></script>
     <script src="Graph.js"></script>
+    <script src="Num_Al.js"></script>
 
     <script>
 
-
       function plot(){
 
-      var domain = parser_get_domain(-5, 5, 1000);
+      var lower = parseFloat(document.getElementById('bound_min').value);
+      var upper = parseFloat(document.getElementById('bound_max').value);
 
-      console.log(domain);
+      
+      var domain = parser_get_domain(lower, upper, 1000);
+
       
       var range = parser_plot(domain, document.getElementById('function').value);
 
@@ -22,6 +25,19 @@
       
       graph_draw(gl, canvas, domain, range);
       
+      }
+
+      
+      function rhieman_sum(){
+
+      var lower = document.getElementById('bound_min').value;
+      var upper = document.getElementById('bound_max').value;
+
+      domain = parser_get_domain(lower, upper, 1000);
+      
+      plot();
+      numal_rsum(domain, document.getElementById('function').value);
+
       }
     </script>
 
@@ -32,8 +48,10 @@
 
     
     <input type="text" placeholder = "function" name="enter" class="enter" value="" id="function"/>
-    <input type="text" placeholder = "bounds" name="enter" class="enter" value="" id="bounds"/>
+    <input type="text" placeholder = "bound min" name="enter" class="enter" value="" id="bound_min"/>
+    <input type="text" placeholder = "bound max" name="enter" class="enter" value="" id="bound_max"/>
     <input type="button" onclick="plot();" value="Plot!"/>
+    <input type="button" onclick="rhieman_sum();" value="r-sum!"/>
 
     
   </body>
